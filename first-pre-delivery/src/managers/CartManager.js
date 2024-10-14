@@ -1,5 +1,5 @@
 const fs = require("fs").promises;
-const { v4: uuidv4 } = require("uuid");
+const crypto = require("crypto");
 
 class CartManager {
   constructor(filePath) {
@@ -23,7 +23,7 @@ class CartManager {
   async createCart() {
     const carts = await this.getCarts();
     const newCart = {
-      id: uuidv4(),
+      id: crypto.randomBytes(4).toString("hex"),
       products: [],
     };
     carts.push(newCart);
