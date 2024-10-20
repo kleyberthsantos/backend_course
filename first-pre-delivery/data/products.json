@@ -28,5 +28,15 @@
     "stock": 140,
     "category": "Low Class",
     "status": true
+  },
+  {
+    "id": "8dfa1011",
+    "title": "Palta Hass",
+    "description": "1 Kg de Pata Hass Low Class",
+    "code": "HASSLOWCLASS",
+    "price": 2.99,
+    "stock": 140,
+    "category": "Low Class",
+    "status": true
   }
 ]
