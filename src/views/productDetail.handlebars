@@ -1,0 +1,28 @@
+<div class="product-detail">
+  <h1>{{product.title}}</h1>
+  <div class="product-info">
+    <p class="description">{{product.description}}</p>
+    <p class="price">Precio: ${{product.price}}</p>
+    <p class="category">Categoría: {{product.category}}</p>
+    <p class="stock">Stock disponible: {{product.stock}}</p>
+    <p class="code">Código: {{product.code}}</p>
+  </div>
+  <button onclick="addToCart('{{product._id}}')" class="add-to-cart">Agregar al carrito</button>
+  <a href="/products" class="back-link">Volver a productos</a>
+</div>
+
+<script>
+async function addToCart(productId) {
+  try {
+    const cartId = localStorage.getItem('cartId');
+    const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: 'POST'
+    });
+    if (response.ok) {
+      alert('Producto agregado al carrito');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+</script>

@@ -1,0 +1,90 @@
+<div class="products-container">
+  <h1>Productos</h1>
+  
+  <div class="filters">
+    <select id="category" onchange="applyFilters()">
+      <option value="">Todas las categorías</option>
+      {{#each categories}}
+        <option value="{{this}}">{{this}}</option>
+      {{/each}}
+    </select>
+    
+    <select id="sort" onchange="applyFilters()">
+      <option value="">Sin ordenar</option>
+      <option value="asc">Precio: Menor a Mayor</option>
+      <option value="desc">Precio: Mayor a Menor</option>
+    </select>
+  </div>
+
+  <div class="products-grid">
+    {{#each payload}}
+      <div class="product-card">
+        <h3>{{this.title}}</h3>
+        <p class="description">{{this.description}}</p>
+        <p class="price">${{this.price}}</p>
+        <p class="stock">Stock: {{this.stock}}</p>
+        <p class="category">Categoría: {{this.category}}</p>
+        <div class="card-actions">
+          <a href="/products/{{this._id}}" class="view-details">Ver detalles</a>
+          <button onclick="addToCart('{{this._id}}')" class="add-to-cart">Agregar al carrito</button>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+  {{#if hasNextPage}}
+    <div class="pagination">
+      {{#if hasPrevPage}}
+        <a href="{{prevLink}}" class="page-link">Anterior</a>
+      {{/if}}
+      <span class="current-page">Página {{page}} de {{totalPages}}</span>
+      {{#if hasNextPage}}
+        <a href="{{nextLink}}" class="page-link">Siguiente</a>
+      {{/if}}
+    </div>
+  {{/if}}
+</div>
+
+<script>
+function applyFilters() {
+  const category = document.getElementById('category').value;
+  const sort = document.getElementById('sort').value;
+  const url = new URL(window.location.href);
+  
+  if (category) url.searchParams.set('query', category);
+  else url.searchParams.delete('query');
+  
+  if (sort) url.searchParams.set('sort', sort);
+  else url.searchParams.delete('sort');
+  
+  window.location.href = url.toString();
+}
+
+async function addToCart(productId) {
+  try {
+    let cartId = localStorage.getItem('cartId');
+    
+    if (!cartId) {
+      const response = await fetch('/api/carts', {
+        method: 'POST'
+      });
+      const cart = await response.json();
+      cartId = cart._id;
+      localStorage.setItem('cartId', cartId);
+    }
+    
+    const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: 'POST'
+    });
+    
+    if (response.ok) {
+      alert('Producto agregado al carrito');
+    } else {
+      throw new Error('Error al agregar al carrito');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error al agregar el producto al carrito');
+  }
+}
+</script>
