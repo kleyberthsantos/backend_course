@@ -1,115 +1,102 @@
-/* Variables */
-:root {
-    --primary-color: #3498db;
-    --secondary-color: #2ecc71;
-    --error-color: #e74c3c;
-    --text-color: #333;
-    --background-color: #f5f6fa;
-  }
-  
-  /* Reset básico */
-  * {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
-  }
-  
-  /* Navbar */
-  .navbar {
-    background-color: var(--primary-color);
-    padding: 1rem;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+.products-container, .cart-container {
+    margin: 20px 0;
+}
+
+.product-card, .cart-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    background: #f9f9f9;
+    transition: box-shadow 0.3s;
+}
+
+.product-card:hover, .cart-item:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-actions {
+    margin-top: 10px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.clear-cart {
+    background-color: #dc3545;
+}
+
+.clear-cart:hover {
+    background-color: #c82333;
+}
+
+.pagination {
     display: flex;
     justify-content: space-between;
-  }
-  
-  .navbar a {
-    color: white;
+    margin-top: 20px;
+}
+
+.page-link {
     text-decoration: none;
-    padding: 0.5rem 1rem;
-  }
-  
-  /* Container */
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-  
-  /* Products Grid */
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-  }
-  
-  .product-card {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  /* Buttons */
-  .btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  .btn-danger {
-    background-color: var(--error-color);
-    color: white;
-  }
-  
-  /* Forms */
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  input, select {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  /* Pagination */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  
-  .page-link {
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    text-decoration: none;
-    color: var(--primary-color);
-  }
-  
-  /* Error styles */
-  .error-container {
-    text-align: center;
-    padding: 2rem;
-  }
-  
-  .error-container h1 {
-    color: var(--error-color);
-  }
+    color: #007bff;
+}
+
+.page-link:hover {
+    text-decoration: underline;
+}
+
+.error-container {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin: 20px 0;
+}
