@@ -1,22 +1,18 @@
 <div class="cart-container">
-  <h1>Carrito de Compras</h1>
-  <div class="cart-items">
+  <h2>Carrito de Compras</h2>
+  
+  {{#if products.length}}
     {{#each products}}
       <div class="cart-item">
         <h3>{{this.product.title}}</h3>
-        <p>{{this.product.description}}</p>
         <p>Precio: ${{this.product.price}}</p>
         <p>Cantidad: {{this.quantity}}</p>
-        <div class="item-controls">
-          <input type="number" id="quantity-{{this.product._id}}" value="{{this.quantity}}" min="1">
-          <button onclick="updateQuantity('{{../cartId}}', '{{this.product._id}}')">Actualizar</button>
-          <button onclick="removeFromCart('{{../cartId}}', '{{this.product._id}}')">Eliminar</button>
-        </div>
+        <button onclick="removeFromCart('{{../cartId}}', '{{this.product._id}}')">Eliminar</button>
       </div>
     {{/each}}
-  </div>
-  <button onclick="clearCart('{{cartId}}')" class="clear-cart">Vaciar carrito</button>
-  <a href="/products" class="continue-shopping">Continuar comprando</a>
+  {{else}}
+    <p>El carrito está vacío</p>
+  {{/if}}
 </div>
 
 <script>

@@ -13,7 +13,14 @@ const productSchema = new mongoose.Schema({
   code: { 
     type: String, 
     required: true, 
-    unique: true 
+    unique: true,
+    validate: {
+      validator: async function(code) {
+        const count = await this.constructor.countDocuments({ code });
+        return !count;
+      },
+      message: props => `El código de producto ${props.value} ya existe!`
+    }
   },
   price: { 
     type: Number, 

@@ -13,31 +13,25 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-// Conexión a MongoDB
 connectDB();
 
-// Configuración de Handlebars
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// Rutas
 app.use('/', viewsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 
-// WebSocket
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
 
   socket.on('newProduct', async (product) => {
     try {
-      // Lógica para agregar nuevo producto
       io.emit('updateProducts');
     } catch (error) {
       socket.emit('error', error.message);
@@ -46,7 +40,6 @@ io.on('connection', (socket) => {
 
   socket.on('deleteProduct', async (productId) => {
     try {
-      // Lógica para eliminar producto
       io.emit('updateProducts');
     } catch (error) {
       socket.emit('error', error.message);
@@ -54,7 +47,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// Manejo de errores
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 8080;

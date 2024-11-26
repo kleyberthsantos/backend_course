@@ -52,64 +52,82 @@ class CartController {
 
   async removeProductFromCart(req, res) {
     try {
-      const cart = await Cart.findById(req.params.cid);
-      if (!cart) {
-        return res.status(404).json({ error: "Cart not found" });
-      }
-
-      cart.products = cart.products.filter(
-        item => item.product.toString() !== req.params.pid
+      const { cid, pid } = req.params;
+      const cart = await Cart.findByIdAndUpdate(
+        cid,
+        { $pull: { products: { product: pid } } },
+        { new: true }
       );
-
-      await cart.save();
       res.json(cart);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   async updateCart(req, res) {
     try {
-      const updatedCart = await Cart.findByIdAndUpdate(
-        req.params.cid,
-        { products: req.body.products },
+      const { cid } = req.params;
+      const { products } = req.body;
+
+      for (const item of products) {
+        const productExists = await Product.findById(item.product);
+        if (!productExists) {
+          return res.status(404).json({ error: `Producto ${item.product} no encontrado` });
+        }
+      }
+
+      const cart = await Cart.findByIdAndUpdate(
+        cid,
+        { products },
         { new: true }
       );
-      res.json(updatedCart);
+      res.json(cart);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   async updateProductQuantity(req, res) {
     try {
-      const cart = await Cart.findById(req.params.cid);
-      const productItem = cart.products.find(
-        item => item.product.toString() === req.params.pid
-      );
+      const { cid, pid } = req.params;
+      const { quantity } = req.body;
 
-      if (!productItem) {
-        return res.status(404).json({ error: "Product not found in cart" });
+      if (!quantity || quantity < 1) {
+        return res.status(400).json({ error: 'Cantidad inválida' });
       }
 
-      productItem.quantity = req.body.quantity;
-      await cart.save();
+      const cart = await Cart.findOneAndUpdate(
+        { _id: cid, 'products.product': pid },
+        { $set: { 'products.$.quantity': quantity } },
+        { new: true }
+      );
       res.json(cart);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
     }
   }
 
   async clearCart(req, res) {
     try {
+      const { cid } = req.params;
       const cart = await Cart.findByIdAndUpdate(
-        req.params.cid,
+        cid,
         { products: [] },
         { new: true }
       );
       res.json(cart);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  async getCart(req, res) {
+    try {
+      const { cid } = req.params;
+      const cart = await Cart.findById(cid).populate('products.product');
+      res.json(cart);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   }
 }

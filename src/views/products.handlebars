@@ -1,18 +1,16 @@
 <div class="products-container">
-  <h1>Productos</h1>
-  
   <div class="filters">
-    <select id="category" onchange="applyFilters()">
+    <select id="category" onchange="filterProducts()">
       <option value="">Todas las categorías</option>
       {{#each categories}}
         <option value="{{this}}">{{this}}</option>
       {{/each}}
     </select>
     
-    <select id="sort" onchange="applyFilters()">
+    <select id="sort" onchange="filterProducts()">
       <option value="">Sin ordenar</option>
-      <option value="asc">Precio: Menor a Mayor</option>
-      <option value="desc">Precio: Mayor a Menor</option>
+      <option value="asc">Precio ascendente</option>
+      <option value="desc">Precio descendente</option>
     </select>
   </div>
 
@@ -20,29 +18,25 @@
     {{#each payload}}
       <div class="product-card">
         <h3>{{this.title}}</h3>
-        <p class="description">{{this.description}}</p>
-        <p class="price">${{this.price}}</p>
-        <p class="stock">Stock: {{this.stock}}</p>
-        <p class="category">Categoría: {{this.category}}</p>
-        <div class="card-actions">
-          <a href="/products/{{this._id}}" class="view-details">Ver detalles</a>
-          <button onclick="addToCart('{{this._id}}')" class="add-to-cart">Agregar al carrito</button>
-        </div>
+        <p>{{this.description}}</p>
+        <p>Precio: ${{this.price}}</p>
+        <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
+        <a href="/products/{{this._id}}">Ver detalles</a>
       </div>
     {{/each}}
   </div>
 
-  {{#if hasNextPage}}
-    <div class="pagination">
-      {{#if hasPrevPage}}
-        <a href="{{prevLink}}" class="page-link">Anterior</a>
-      {{/if}}
-      <span class="current-page">Página {{page}} de {{totalPages}}</span>
-      {{#if hasNextPage}}
-        <a href="{{nextLink}}" class="page-link">Siguiente</a>
-      {{/if}}
-    </div>
-  {{/if}}
+  <div class="pagination">
+    {{#if hasPrevPage}}
+      <a href="{{prevLink}}">&laquo; Anterior</a>
+    {{/if}}
+    
+    <span>Página {{page}} de {{totalPages}}</span>
+    
+    {{#if hasNextPage}}
+      <a href="{{nextLink}}">Siguiente &raquo;</a>
+    {{/if}}
+  </div>
 </div>
 
 <script>
