@@ -4,7 +4,8 @@ const Product = require('../models/product.model');
 class CartController {
   async createCart(req, res) {
     try {
-      const newCart = await Cart.create({ products: [] });
+      const newCart = new Cart();
+      await newCart.save();
       res.status(201).json(newCart);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -96,11 +97,19 @@ class CartController {
         return res.status(400).json({ error: 'Cantidad inválida' });
       }
 
-      const cart = await Cart.findOneAndUpdate(
-        { _id: cid, 'products.product': pid },
-        { $set: { 'products.$.quantity': quantity } },
-        { new: true }
-      );
+      const cart = await Cart.findById(cid);
+      if (!cart) {
+        return res.status(404).json({ error: 'Carrito no encontrado' });
+      }
+
+      const existingProduct = cart.products.find(p => p.product.toString() === pid);
+      if (existingProduct) {
+        existingProduct.quantity += quantity;
+      } else {
+        cart.products.push({ product: pid, quantity });
+      }
+
+      await cart.save();
       res.json(cart);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -132,4 +141,4 @@ class CartController {
   }
 }
 
-module.exports = new CartController();
+module.exports = CartController;

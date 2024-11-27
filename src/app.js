@@ -5,7 +5,7 @@ const http = require('http');
 const socketIO = require('socket.io');
 const connectDB = require('./config/db.config');
 const productsRouter = require('./routes/products.router');
-const cartsRouter = require('./routes/carts.router');
+const cartsRouter = require('./routes/cart.router');
 const viewsRouter = require('./routes/views.router');
 const errorHandler = require('./middleware/errorHandler');
 
