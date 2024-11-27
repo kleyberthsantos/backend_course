@@ -8,12 +8,20 @@ const productsRouter = require('./routes/products.router');
 const cartsRouter = require('./routes/cart.router');
 const viewsRouter = require('./routes/views.router');
 const errorHandler = require('./middleware/errorHandler');
+const mongoose = require('mongoose');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-connectDB();
+connectDB()
+  .then(() => {
+    console.log('Conexión a MongoDB establecida');
+  })
+  .catch((err) => {
+    console.error('Error al conectar a MongoDB:', err);
+    process.exit(1);
+  });
 
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');

@@ -23,8 +23,6 @@ class ProductController {
 
       const result = await Product.paginate(filter, options);
 
-      const baseUrl = `${req.protocol}://${req.get('host')}/api/products`;
-      
       const response = {
         status: 'success',
         payload: result.docs,
@@ -34,8 +32,8 @@ class ProductController {
         page: result.page,
         hasPrevPage: result.hasPrevPage,
         hasNextPage: result.hasNextPage,
-        prevLink: result.hasPrevPage ? `${baseUrl}?page=${result.prevPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null,
-        nextLink: result.hasNextPage ? `${baseUrl}?page=${result.nextPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null
+        prevLink: result.hasPrevPage ? `/api/products?page=${result.prevPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null,
+        nextLink: result.hasNextPage ? `/api/products?page=${result.nextPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null
       };
 
       res.json(response);
